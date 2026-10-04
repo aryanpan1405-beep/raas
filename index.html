@@ -111,8 +111,8 @@ video{width:100%;border-radius:10px;margin-top:10px}ul.rules{margin:6px 0 0;padd
 <script>addEventListener('error',function(e){var b=document.getElementById('errBar');b.style.display='block';b.textContent='Page error: '+e.message+' (line '+e.lineno+')'});</script>
 <script>
 /* ===== CONFIG: edit before deploying ===== */
-const API_URL="https://script.google.com/macros/s/AKfycbz05bAKr4SLF6MrHMMZzrZntZEoIvlQIUjdon67bRW8RqaquaP4yVrr8wMPHiniz0rJ/exec";
-const CFG={DATE:"Fri, 16 Oct 2026",TIME:"11:30 AM",VENUE:"BIT Raipur Campus",UPI_ID:"9199202863@ptyes",PAYEE:"BIT Raipur Cultural Committee",
+const API_URL="https://script.google.com/macros/s/AKfycbzPUia7emy14xx8_SooQD5px5NbAojnZK5GNUxmYt-Yj_klwZpA3rbZJ2MsAEAK3dVFaA/exec";
+const CFG={DATE:"Fri, 16 Oct 2026",TIME:"11:30 AM",VENUE:"BIT Raipur Campus",UPI_ID:"9199202863@ptyes",PAYEE:"Mr Aryan Pandey",
 FEES:{Attend:100,Solo:100,Duet:150,Group:300,Spot50:50}, /* must match FEES in Code.gs */
 RULES:["Carry your QR pass and college ID card to the gate.","Each pass is non-transferable. Duet and group passes admit the registered number of people only.","Traditional attire is encouraged. Respect all participants.","Outside food, drinks and prohibited items are not allowed.","The organizers' decision on entry is final."]};
 const DEGREES=["B.Tech","Pharmacy","BCA","BBA","B.Com","Other"];
@@ -149,7 +149,7 @@ function formHTML(p,spot){const opt=a=>a.map(x=>`<option>${x}</option>`).join(''
 <div class="note" id="${p}note"></div>
 <h2 style="margin-top:20px">Payment</h2>
 <div class="row"><div><label>Payment mode</label><select id="${p}mode"><option value="Online">Online (UPI)</option><option value="Cash">Cash</option></select></div><div><label>Amount payable</label><div class="amtbox" id="${p}amt"></div></div></div>
-<div id="${p}online"><div class="pay"><div class="qrbox" id="${p}qr"></div><div><div class="sub">Scan with GPay / PhonePe / Paytm / BHIM</div><a class="btn alt sm" id="${p}upi" style="padding:9px 14px;font-size:14px">Pay with UPI app</a></div></div>
+<div id="${p}online"><div class="pay"><div class="qrbox" id="${p}qr"></div><div><div class="sub">Scan with GPay / PhonePe / Paytm / BHIM</div><div class="sub" style="color:var(--ink);margin-top:4px">Pay to: <b>${esc(CFG.PAYEE)}</b><br>UPI ID: <b>${esc(CFG.UPI_ID)}</b></div><a class="btn alt sm" id="${p}upi" style="padding:9px 14px;font-size:14px">Pay with UPI app</a></div></div>
 <label>UPI transaction ID (UTR, 12 digits) <i>*</i></label><input id="${p}u" inputmode="numeric" maxlength="12" placeholder="Shown in your UPI app after paying">
 <label>Payment screenshot (recommended)</label><input id="${p}shot" type="file" accept="image/*"><div class="sub" id="${p}shotmsg" style="margin-top:6px">Upload the screenshot of your successful UPI payment. It speeds up verification.</div></div>
 <div id="${p}cash" class="msg g hide">${spot?'Collect the cash amount shown above before issuing the pass.':'Pay the amount in cash at the registration desk on the event day. You will get a reference number after submitting; show it at the desk. Your pass is issued once the cash is received and verified.'}</div>`}
