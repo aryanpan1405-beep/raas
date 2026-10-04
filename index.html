@@ -111,7 +111,7 @@ video{width:100%;border-radius:10px;margin-top:10px}ul.rules{margin:6px 0 0;padd
 <script>addEventListener('error',function(e){var b=document.getElementById('errBar');b.style.display='block';b.textContent='Page error: '+e.message+' (line '+e.lineno+')'});</script>
 <script>
 /* ===== CONFIG: edit before deploying ===== */
-const API_URL="https://script.google.com/macros/s/AKfycbzoYJwm1SnTQ-mrIzobtLpBrZ-XVpr-wS6ZXcO9FRJYBnSKN_V7WTFdLSt_vHFBnqAZ/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbyV47EaunIhQ76Ql9Bii8aMd5C_pvy6DtEv_pSE9pn7aU13Rsiv0rt3wFhSu70Bd0tY/exec";
 const CFG={DATE:"Fri, 16 Oct 2026",TIME:"11:30 AM",VENUE:"BIT Raipur Campus",UPI_ID:"9199202863@ptyes",PAYEE:"Mr Aryan Pandey",
 FEES:{Attend:100,Solo:100,Duet:150,Group:300,Spot50:50}, /* must match FEES in Code.gs */
 RULES:["Carry your QR pass and college ID card to the gate.","Each pass is non-transferable. Duet and group passes admit the registered number of people only.","Traditional attire is encouraged. Respect all participants.","Outside food, drinks and prohibited items are not allowed.","The organizers' decision on entry is final."]};
@@ -185,7 +185,7 @@ initForm('r',false);initForm('d',true);
 $('go').onclick=async()=>{const d=getData('r'),er=check(d,false);if(er)return say('regMsg','e',er);if(!$('c').checked)return say('regMsg','e','Please accept the terms.');
   $('go').disabled=true;say('regMsg','g','Submitting…');
   try{const r=await api('register',d);$('sp').value=d.phone;$('su').value=r.ref||d.utr;
-    say('regMsg','g',(d.mode==='Cash'?`✔ Registered! Pay ₹${r.amount} in cash at the registration desk and show this reference: ${r.ref}. Please save it. Your pass is issued after the cash is verified.`:'✔ Registration received! Once the organizers verify your payment, your pass will be emailed. You can also download it from "My Pass" (mobile number + UTR).')+(d.shot?(r.shot?' Your payment screenshot was received.':' (Your screenshot could not be saved, but your registration is received.)'):''))}
+    say('regMsg','g',(d.mode==='Cash'?`✔ Registered! Pay ₹${r.amount} in cash at the registration desk and show this reference: ${r.ref}. Please save it. Your pass is issued after the cash is verified.`:'✔ Registration received! Once the organizers verify your payment, your pass will be emailed. You can also download it from "My Pass" (mobile number + UTR).')+(d.shot?(r.shot?' Your payment screenshot was received.':' (Your screenshot could not be saved'+(r.shotErr?': '+r.shotErr:'')+'. Your registration is received.)'):''))}
   catch(e){say('regMsg','e',e.message)}$('go').disabled=false};
 
 /* ---- pass drawing ---- */
@@ -224,7 +224,7 @@ $('dPin').onkeydown=e=>{if(e.key==='Enter')$('dAuth').click()};
 $('dGo').onclick=async()=>{const d=getData('d'),er=check(d,true);if(er)return say('dReg','e',er);
   $('dGo').disabled=true;say('dReg','g','Registering…');
   try{const r=await api('spot',{pin:dPin,...d});deskCode=r.pass.code;
-    say('dReg','g',`✔ ${r.pass.name} registered. ₹${r.amount} ${r.mode==='Cash'?'cash':'online'} received. Pass code: ${deskCode}${r.pass.admits>1?' (admits '+r.pass.admits+')':''}`);
+    say('dReg','g',`✔ ${r.pass.name} registered. ₹${r.amount} ${r.mode==='Cash'?'cash':'online'} received. Pass code: ${deskCode}${r.pass.admits>1?' (admits '+r.pass.admits+')':''}${d.shot&&!r.shot?' · Screenshot NOT saved'+(r.shotErr?': '+r.shotErr:''):''}`);
     drawPass('dpass',r.pass);$('dDl').classList.remove('hide');$('dNew').classList.remove('hide');$('dGo').classList.add('hide')}
   catch(e){say('dReg','e',e.message)}$('dGo').disabled=false};
 $('dDl').onclick=()=>saveCanvas('dpass',deskCode);
